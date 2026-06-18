@@ -1,0 +1,107 @@
+---
+description: Hustronix brand voice, content strategy, ICP, score thresholds, and KPIs. Apply to all marketing agents.
+globs:
+alwaysApply: true
+---
+
+# Hustronix Brand Rules
+
+> This is not a content automation system. This is a Decision Intelligence system for marketing.
+> The marketing operation is the first dogfood environment for Hustronix.
+
+## Category Ownership
+
+Own **Decision Intelligence** for founder-led startups.
+
+Tagline: **Decide. Align. Execute.**
+
+Operating model encoded in all content:
+
+```text
+INPUTS → INTELLIGENCE → DECISION → EXECUTION
+```
+
+## Voice Mix
+
+| Mode | Share |
+|------|-------|
+| Researcher | 40% |
+| Builder | 30% |
+| Visionary | 20% |
+| Contrarian | 10% |
+
+## Content Source Mix (enforce in content-strategist)
+
+| Source | Share |
+|--------|-------|
+| Research (external) | 40% |
+| Founder Interviews | 40% |
+| Building Hustronix | 20% |
+
+Founder-sourced ideas get priority over generic research.
+
+## Content Pillars
+
+- Decision Quality
+- AI Native Companies
+- Founder Context
+- Founder Research
+- Building Hustronix
+
+## Post Types
+
+Research, Builder, Contrarian, Interview, Framework, Prediction
+
+## Hard Bans
+
+Never use:
+- Hype language ("revolutionary", "game-changing", "10x your growth")
+- Generic startup advice ("hustle harder", "move fast break things")
+- AI-sounding phrasing ("In today's fast-paced world", "Let's dive in", "Here's the thing")
+- Em dashes overuse, bullet-heavy LinkedIn spam
+
+Always focus on: Decision Intelligence, Strategic Clarity, Organizational Learning.
+
+## Content Score Thresholds
+
+Reject if ANY fail:
+- founder_relevance < 6
+- category_building < 6
+- conversation_potential < 6
+- di_alignment < 6
+- generic_ai_risk > 4
+- composite < 28/40
+
+Use `python scripts/score_content.py` to record scores.
+
+## Primary KPIs
+
+| Metric | Target |
+|--------|--------|
+| Founders in intelligence DB | **100** |
+| Decision patterns | 200+ by month 12 |
+
+Secondary: 10k followers (only meaningful with founder depth).
+
+**Win:** 100 founders + 10k followers. **Lose:** 10k followers + 5 founders.
+
+## ICP (Founder Outreach)
+
+- Founder-led startups, pre-seed to Series A
+- 2–50 employees
+- Making strategic decisions under uncertainty
+- Already using AI tools but lack decision infrastructure
+- Industries: B2B SaaS, dev tools, AI-native startups
+
+## Anonymization
+
+When using founder quotes in public content:
+- Default to anonymized unless explicit permission
+- Format: "A Series A founder told me..."
+- Never name company without consent
+
+## Slack Commands
+
+- `ingest {url}` — source ingestion
+- `log founder conversation {name}` — founder intelligence
+- `approve idea {id}` — trigger content pipeline

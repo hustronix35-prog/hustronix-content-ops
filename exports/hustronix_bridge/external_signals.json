@@ -1,0 +1,88 @@
+{
+  "exported_at": "2026-06-18T18:55:22.637261+00:00",
+  "signals": [
+    {
+      "type": "research_insight",
+      "source": "marketing_os",
+      "id": 6,
+      "content": "Decision Intelligence is the missing layer between AI tools and business outcomes",
+      "category": "Decision Quality",
+      "confidence": 0.9,
+      "timestamp": "2026-06-18 18:55:22"
+    },
+    {
+      "type": "research_insight",
+      "source": "marketing_os",
+      "id": 5,
+      "content": "AI-native companies bottleneck on judgment calls, not build capacity",
+      "category": "Execution",
+      "confidence": 0.85,
+      "timestamp": "2026-06-18 18:55:22"
+    },
+    {
+      "type": "research_insight",
+      "source": "marketing_os",
+      "id": 4,
+      "content": "Top founders document why decisions were made, not just what was decided",
+      "category": "Organizational Learning",
+      "confidence": 0.9,
+      "timestamp": "2026-06-18 18:55:22"
+    },
+    {
+      "type": "research_insight",
+      "source": "marketing_os",
+      "id": 3,
+      "content": "AI Chief of Staff products conflate execution with strategic decision support",
+      "category": "Product Strategy",
+      "confidence": 0.8,
+      "timestamp": "2026-06-18 18:55:22"
+    },
+    {
+      "type": "research_insight",
+      "source": "marketing_os",
+      "id": 2,
+      "content": "Agent capability exceeds organizational decision infrastructure in most startups",
+      "category": "AI Native Organizations",
+      "confidence": 0.85,
+      "timestamp": "2026-06-18 18:55:22"
+    },
+    {
+      "type": "research_insight",
+      "source": "marketing_os",
+      "id": 1,
+      "content": "Vocal customers overweight roadmaps \u2014 founders need decision frameworks that weight growth stage",
+      "category": "Decision Quality",
+      "confidence": 0.9,
+      "timestamp": "2026-06-18 18:55:22"
+    },
+    {
+      "type": "founder_intelligence",
+      "source": "marketing_os",
+      "id": 2,
+      "founder": "Morgan Lee",
+      "pain": "Solo founder decision overload with no lightweight system",
+      "product_implications": "Lightweight decision journal for solo founders with strategic question templates",
+      "timestamp": "2026-06-18 18:55:22"
+    },
+    {
+      "type": "founder_intelligence",
+      "source": "marketing_os",
+      "id": 1,
+      "founder": "Alex Rivera",
+      "pain": "No decision documentation; AI tools without decision clarity",
+      "product_implications": "Decision logging with outcome tracking tied to prioritization choices",
+      "timestamp": "2026-06-18 18:55:22"
+    },
+    {
+      "type": "decision_pattern",
+      "source": "marketing_os",
+      "id": 1,
+      "category": "Product Prioritization",
+      "trigger": "3 enterprise customers requested SSO feature",
+      "decision": "Prioritized enterprise SSO over SMB onboarding",
+      "outcome": "Enterprise deal closed but SMB activation dropped 18%",
+      "lesson": "Overweighted vocal enterprise customers vs growth-stage SMB base",
+      "timestamp": "2026-06-18 18:55:22"
+    }
+  ]
+}

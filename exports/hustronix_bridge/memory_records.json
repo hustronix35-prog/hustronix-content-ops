@@ -1,0 +1,29 @@
+{
+  "exported_at": "2026-06-18T18:55:22.637342+00:00",
+  "memory_records": [
+    {
+      "fact": "Strategic question trending: 'Should we hire?' (seen 1x, category: hiring)",
+      "source": "marketing_os_strategic_questions"
+    },
+    {
+      "fact": "Strategic question trending: 'Should we prioritize feature X?' (seen 1x, category: product)",
+      "source": "marketing_os_strategic_questions"
+    },
+    {
+      "fact": "Strategic question trending: 'Should we prioritize feature X?' (seen 1x, category: product)",
+      "source": "marketing_os_strategic_questions"
+    },
+    {
+      "fact": "Strategic question trending: 'Should we hire?' (seen 1x, category: hiring)",
+      "source": "marketing_os_strategic_questions"
+    },
+    {
+      "fact": "Product requirement [hypothesis]: Lightweight decision journal for solo founders with strategic question templates (priority: high)",
+      "source": "marketing_os_product_requirements"
+    },
+    {
+      "fact": "Product requirement [hypothesis]: Decision logging with outcome tracking tied to prioritization choices (priority: high)",
+      "source": "marketing_os_product_requirements"
+    }
+  ]
+}

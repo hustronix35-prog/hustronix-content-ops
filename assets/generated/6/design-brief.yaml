@@ -1,0 +1,23 @@
+topic: Decision Quality
+audience: Seed-Series B Founders
+visual_type: Executive Carousel
+visual_category: decision_pattern
+brand_rules:
+  background: "#0A0A0A"
+  typography: "#EDEDED"
+  accent: "#D4AF37"
+  font: Inter
+layout: Minimal, Linear-inspired
+slides:
+  - name: Hook
+    content: "Vocal customers hijack your roadmap. Here's the decision framework top founders ..."
+  - name: Trigger
+    content: "Vocal customers hijack your roadmap. Here's the decision framework top founders ..."
+  - name: Decision
+    content: "Vocal customers hijack your roadmap. Here's the decision framework top founders ..."
+  - name: Outcome
+    content: "Vocal customers hijack your roadmap. Here's the decision framework top founders ..."
+  - name: Lesson
+    content: "Vocal customers hijack your roadmap. Here's the decision framework top founders ..."
+  - name: CTA
+    content: "Vocal customers hijack your roadmap. Here's the decision framework top founders ..."

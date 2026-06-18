@@ -1,0 +1,6 @@
+data/marketing.db
+data/*.db-journal
+__pycache__/
+*.pyc
+.env
+.DS_Store

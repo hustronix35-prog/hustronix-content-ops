@@ -1,0 +1,7 @@
+pattern:
+  name: decision_pattern_vertical_v1
+  category: decision_pattern
+  performance: 0.0
+  times_used: 0
+  layout_spec: "Trigger → Decision → Outcome → Lesson"
+  examples: []

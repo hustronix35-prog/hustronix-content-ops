@@ -1,0 +1,14 @@
+{
+  "name": "Hustronix Approve Idea (Slack)",
+  "description": "When user says approve idea {id} in Slack, run full content pipeline",
+  "workflow": {
+    "triggers": [{ "slackTrigger": {} }],
+    "actions": [],
+    "prompts": [
+      {
+        "text": "When a Slack message contains 'approve idea' followed by a number:\n\n1. Extract idea ID\n2. Run: python scripts/approve_idea.py {id}\n3. Or manually run content-scorer -> content-writer -> design-agent -> design-scorer skills\n4. Reply in thread with draft paths, design brief, and scores\n\nWorkspace: D:\\content\nPick Slack channel in Automations editor."
+      }
+    ],
+    "memoryEnabled": true
+  }
+}

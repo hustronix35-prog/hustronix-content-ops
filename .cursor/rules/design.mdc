@@ -1,0 +1,91 @@
+---
+description: HARD CONSTRAINT for all visual generation. Design-agent MUST read before every brief or image.
+globs:
+  - assets/**
+  - vault/visual_patterns/**
+alwaysApply: false
+---
+
+# Hustronix Design Rules (Hard Constraint)
+
+Every visual must communicate **one strategic insight**.
+
+If the visual is beautiful but does not increase understanding, **reject it**.
+
+```text
+Clarity > Creativity
+Understanding > Decoration
+Signal > Aesthetics
+```
+
+## Visual DNA
+
+```yaml
+brand:
+  name: Hustronix
+  tagline: "Decide. Align. Execute."
+  style:
+    - Strategic
+    - Technical
+    - Minimal
+    - Executive
+  avoid:
+    - Cartoon
+    - Illustration-heavy
+    - Startup hype
+    - Bright gradients
+    - Generic AI art
+```
+
+## Colors (NO additional colors allowed)
+
+| Token | Hex |
+|-------|-----|
+| primary_white | #EDEDED |
+| primary_black | #0A0A0A |
+| signal_gold | #D4AF37 |
+| muted_gold | #A88F2A |
+| dark_grey | #1A1A1A |
+| soft_grey | #9CA3AF |
+
+Default layout: black background (#0A0A0A), white typography (#EDEDED), signal gold accents (#D4AF37).
+
+## Typography
+
+- **Primary font:** Inter only
+- Heading: Bold
+- Body: Regular
+- Emphasis: SemiBold
+
+**Forbidden:** Poppins, Montserrat, Playfair, any decorative font.
+
+## Visual Categories
+
+| # | Category | Structure | When |
+|---|----------|-----------|------|
+| 1 | decision_pattern | Trigger → Decision → Outcome → Lesson | Most common |
+| 2 | strategic_question | Large typography, minimal | Question-led posts |
+| 3 | founder_insight | Large quote + small framework | Interview content |
+| 4 | execution_model | Flowchart, hexagons, signal network | Framework posts |
+| 5 | future_of_organizations | Cinematic, still minimal | Vision/category |
+
+## Design Score Thresholds
+
+Reject if ANY fail:
+- clarity < 8
+- brand_consistency < 9
+- founder_appeal < 8
+- di_alignment < 9
+- generic_ai_feel > 2
+
+Use `python scripts/score_design.py` to record scores.
+
+## Output Protocol
+
+1. Classify visual category
+2. Generate YAML design brief (NOT raw image prompt)
+3. Write to `assets/generated/{draft_id}/design-brief.yaml`
+4. Score brief before any image generation
+5. Only generate images after design score passes
+
+Never call image generation without a scored YAML brief first.

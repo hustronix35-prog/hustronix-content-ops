@@ -1,0 +1,7 @@
+pattern:
+  name: strategic_question_minimal_v1
+  category: strategic_question
+  performance: 0.0
+  times_used: 0
+  layout_spec: "Large Inter Bold question centered"
+  examples: []

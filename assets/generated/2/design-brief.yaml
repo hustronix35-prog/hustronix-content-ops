@@ -1,0 +1,21 @@
+topic: Founder Context
+audience: Seed-Series B Founders
+visual_type: Executive Carousel
+visual_category: founder_insight
+brand_rules:
+  background: "#0A0A0A"
+  typography: "#EDEDED"
+  accent: "#D4AF37"
+  font: Inter
+layout: Minimal, Linear-inspired
+slides:
+  - name: Quote
+    content: "A Series A founder told me: 'I don't need another AI wrapper. I need to know why..."
+  - name: Context
+    content: "A Series A founder told me: 'I don't need another AI wrapper. I need to know why..."
+  - name: Pattern
+    content: "A Series A founder told me: 'I don't need another AI wrapper. I need to know why..."
+  - name: Framework
+    content: "A Series A founder told me: 'I don't need another AI wrapper. I need to know why..."
+  - name: Question
+    content: "A Series A founder told me: 'I don't need another AI wrapper. I need to know why..."

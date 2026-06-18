@@ -1,0 +1,14 @@
+{
+  "name": "Hustronix Daily Founder Outreach",
+  "description": "Generate 5 ICP-matched founder DM drafts for human review. Never auto-send.",
+  "workflow": {
+    "triggers": [{ "cron": { "cron": "0 8 * * 1-5" } }],
+    "actions": [],
+    "prompts": [
+      {
+        "text": "Run founder-outreach skill in D:\\content. Generate 5 ICP-matched founder profiles and personalized LinkedIn DM drafts. Insert into founder_outreach table with status pending_review. Post batch to Slack #marketing-os for approval. NEVER auto-send messages."
+      }
+    ],
+    "memoryEnabled": true
+  }
+}

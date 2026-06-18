@@ -1,0 +1,14 @@
+{
+  "name": "Hustronix Sunday Founder Brief",
+  "description": "Weekly Founder Intelligence Report synthesis",
+  "workflow": {
+    "triggers": [{ "cron": { "cron": "0 9 * * 0" } }],
+    "actions": [],
+    "prompts": [
+      {
+        "text": "Run founder-intelligence-agent weekly synthesis in D:\\content.\n\nWrite analytics/reports/founder-brief/weekly-{date}.md covering:\n- What founders talked about\n- Top pain points\n- Decision bottlenecks\n- Strategic questions by times_seen\n- New decision patterns\n- Product requirements and feature hypotheses\n\nPost internal summary to Slack #marketing-os if available."
+      }
+    ],
+    "memoryEnabled": true
+  }
+}

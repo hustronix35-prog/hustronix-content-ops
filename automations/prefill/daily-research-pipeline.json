@@ -1,0 +1,15 @@
+{
+  "name": "Hustronix Daily Research Pipeline",
+  "description": "Daily source ingestion, research extraction, and content ideation for Marketing OS in D:\\content",
+  "workflow": {
+    "triggers": [{ "cron": { "cron": "0 7 * * *" } }],
+    "actions": [],
+    "prompts": [
+      {
+        "text": "Run the Hustronix Marketing OS daily pipeline in workspace D:\\content.\n\n1. Read skill source-ingestion — check for unprocessed raw_sources\n2. Read skill research-agent — extract insights from processed=0 sources, write vault/insights/\n3. Read skill content-strategist — generate 3-5 ideas, update review/queue.md\n4. Run: python scripts/daily_digest.py\n5. If Slack MCP connected, post summary to #marketing-os. Otherwise the digest file is enough.\n\nFollow hustronix-brand.mdc rules. Enforce 40/40/20 source mix."
+      }
+    ],
+    "memoryEnabled": true,
+    "agentOptions": { "skipInstall": false }
+  }
+}
