@@ -1,0 +1,16 @@
+{
+  "pipeline": "Hustronix Daily Research Pipeline",
+  "run_at": "2026-06-18T20:18:27.950002+00:00",
+  "ingestion": {
+    "unprocessed_sources": 0,
+    "action": "none"
+  },
+  "research": {
+    "processed": 0,
+    "insights_added": 0
+  },
+  "new_ideas": [],
+  "digest": "D:\\content\\analytics\\reports\\daily-digest-2026-06-18.md",
+  "queue": "D:\\content\\review\\queue.md",
+  "slack": "skipped (no Slack MCP in session \u2014 see digest file)"
+}

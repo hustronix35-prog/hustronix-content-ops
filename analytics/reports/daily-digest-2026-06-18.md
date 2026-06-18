@@ -2,13 +2,10 @@
 
 ## Vault KPIs
 - Founders: 2 / 100 target
-- Pending ideas: 4
+- Pending ideas: 3
 - Unprocessed sources: 0
 
 ## Pending Content Ideas
-
-- **#2** [Interview] A Series A founder told me: 'I don't need another AI wrapper. I need to know why... (founder)
-  → Approve: `python scripts/approve_idea.py 2`
 
 - **#3** [Contrarian] Your AI stack is not your problem. Your decision infrastructure is.... (research)
   → Approve: `python scripts/approve_idea.py 3`
