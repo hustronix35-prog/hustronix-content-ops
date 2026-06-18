@@ -1,14 +1,18 @@
 {
   "name": "Hustronix Daily Research Pipeline",
-  "description": "Daily source ingestion, research extraction, and content ideation for Marketing OS in D:\\content",
+  "description": "Daily Marketing OS: ingest, research, content ideas, digest to Slack. Repo: hustronix35-prog/marketing-os",
   "workflow": {
     "triggers": [{ "cron": { "cron": "0 7 * * *" } }],
-    "actions": [],
+    "actions": [{ "slack": {} }],
     "prompts": [
       {
-        "text": "Run the Hustronix Marketing OS daily pipeline in workspace D:\\content.\n\n1. Read skill source-ingestion — check for unprocessed raw_sources\n2. Read skill research-agent — extract insights from processed=0 sources, write vault/insights/\n3. Read skill content-strategist — generate 3-5 ideas, update review/queue.md\n4. Run: python scripts/daily_digest.py\n5. If Slack MCP connected, post summary to #marketing-os. Otherwise the digest file is enough.\n\nFollow hustronix-brand.mdc rules. Enforce 40/40/20 source mix."
+        "text": "You are running the Hustronix Marketing OS daily pipeline in repo hustronix35-prog/marketing-os on branch master.\n\nRead these project rules first:\n- .cursor/rules/hustronix-brand.mdc\n- Skills in .cursor/skills/\n\nRun in order:\n\n1. SOURCE INGESTION\n   - Check raw_sources for processed=0 rows\n   - If new URLs were added, ingest them via scripts/ingest_url.py\n\n2. RESEARCH AGENT\n   - Process unprocessed raw_sources\n   - Extract insights into research_insights table\n   - Write vault/insights/{date}.md\n   - Extract decision_patterns where applicable\n\n3. CONTENT STRATEGIST\n   - Generate 3-5 content ideas\n   - Enforce source mix: 40% research, 40% founder, 20% building Hustronix\n   - Insert into content_ideas with status pending\n   - Update review/queue.md\n\n4. RUN PIPELINE SCRIPT\n   - Execute: python scripts/run_daily_pipeline.py\n   - Or: python scripts/daily_digest.py\n\n5. SLACK SUMMARY\n   - Use Send to Slack to post to #marketing-os with:\n     • Vault KPIs (founders count, pending ideas, decision patterns)\n     • List of pending ideas (id + hook)\n     • Top strategic question by times_seen\n     • Reminder: approve with \"python scripts/approve_idea.py {id}\"\n\nRules:\n- Never sound like AI hype\n- Never auto-publish content\n- Founder intelligence is primary KPI (target: 100 founders)\n- Do not duplicate existing hooks in content_ideas\n\nPrimary action: run python scripts/run_daily_pipeline.py first.\nPost the contents of analytics/reports/daily-digest-{date}.md to Slack.\nDo not manually rewrite ideas unless pending ideas < 3."
       }
     ],
+    "gitConfig": {
+      "repo": "hustronix35-prog/marketing-os",
+      "branch": "master"
+    },
     "memoryEnabled": true,
     "agentOptions": { "skipInstall": false }
   }
