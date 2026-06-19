@@ -39,25 +39,75 @@ brand:
 
 ## Colors (NO additional colors allowed)
 
-| Token | Hex |
-|-------|-----|
-| primary_white | #EDEDED |
-| primary_black | #0A0A0A |
-| signal_gold | #D4AF37 |
-| muted_gold | #A88F2A |
-| dark_grey | #1A1A1A |
-| soft_grey | #9CA3AF |
+| Token | Hex | Use |
+|-------|-----|-----|
+| primary_white | #EDEDED | Typography |
+| primary_black | #0A0A0A | Default background |
+| signal_gold | #D4AF37 | Accent, logo NIX, lines |
+| muted_gold | #A88F2A | Secondary accent |
+| dark_grey | #1A1A1A | Cards, panels |
+| soft_grey | #9CA3AF | Body secondary text |
 
 Default layout: black background (#0A0A0A), white typography (#EDEDED), signal gold accents (#D4AF37).
 
+## Logo System
+
+Assets in `assets/brand/`:
+
+| File | Use |
+|------|-----|
+| logo-lockup.png | Official full lockup — CTA slides |
+| logo-horizontal.png | Official horizontal — content slide footers |
+| logo-icon.svg | Legacy vector mark (fallback) |
+| logo-lockup.svg | Legacy vector lockup (fallback) |
+| hex-grid.svg | Subtle background texture |
+| tokens.css | Slide CSS variables |
+
+Tagline lockup: **DECIDE. ALIGN. EXECUTE.** — embedded in `logo-lockup.png`.
+
+Clearspace: radius of the central gold circle in the logo mark.
+
 ## Typography
 
-- **Primary font:** Inter only
-- Heading: Bold
-- Body: Regular
-- Emphasis: SemiBold
+- **Primary font:** Inter only (Light, Regular, Medium, SemiBold, Bold)
+- Slide headline: Bold 52–64px
+- Slide body: Regular 26px, soft grey
+- Labels: SemiBold uppercase, signal gold, letter-spaced
 
 **Forbidden:** Poppins, Montserrat, Playfair, any decorative font.
+
+## Brand Icons (line art, gold)
+
+| Icon | Meaning |
+|------|---------|
+| Signal | Node network — Intelligence |
+| System | Hexagon — Structure |
+| Decision | Crosshair — Choice point |
+| Execution | Arrow — Forward motion |
+
+Visual narrative flow: Inputs → Intelligence → Decision → Execution
+
+## Slide Format
+
+- Size: **1080×1080** (LinkedIn carousel)
+- Background: deep black + hex grid overlay at ~35% opacity
+- Footer: logo icon + HUSTRO/NIX wordmark on every slide
+- Slide index: `01 / 06` in gold (top left)
+
+## Generate Carousels
+
+```bash
+python scripts/generate_carousel.py --idea-id 3
+python scripts/generate_carousel.py --option 1
+python scripts/generate_carousel.py --idea-id 3 --single
+python scripts/render_carousel.py assets/generated/3/
+```
+
+Slack: `carousel 1` | `carousel 2` | `carousel 3`
+
+Output: `assets/generated/{id}/slides/*.png` + `preview.html`
+
+**Quality tier:** Premium v2 — 7 layout types (cover, split, pipeline, flow, stats, quote, cta)
 
 ## Visual Categories
 

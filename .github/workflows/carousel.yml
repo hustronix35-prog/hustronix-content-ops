@@ -1,0 +1,45 @@
+name: Premium Carousel
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - "assets/brand/**"
+      - "scripts/**"
+      - "requirements.txt"
+  pull_request:
+    paths:
+      - "assets/brand/**"
+      - "scripts/**"
+      - "requirements.txt"
+
+jobs:
+  carousel-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install render dependencies
+        run: python scripts/setup_carousel_env.py
+
+      - name: Validate brand + playwright
+        run: python scripts/validate_carousel_setup.py
+
+      - name: Generate premium carousel smoke test
+        run: python scripts/generate_carousel.py --idea-id 3
+
+      - name: Assert all PNGs rendered
+        run: |
+          python -c "
+          import json
+          from pathlib import Path
+          m = json.loads(Path('assets/generated/3/manifest.json').read_text())
+          assert m['quality'] == 'premium_v2'
+          assert m['render_complete'] is True
+          assert len(m['png_slides']) == m['slide_count']
+          print('OK:', len(m['png_slides']), 'premium slides')
+          "

@@ -1,17 +1,19 @@
 ---
 name: design-agent
-description: Brand-first YAML design brief generator for Hustronix visuals. NOT generic image generation. Read design.mdc hard constraints first.
+description: Brand-system carousel and image generator for Hustronix. YAML brief + HTML/PNG output. Read design.mdc first.
 ---
 
-# Design Agent v2 — Brand-First Generation
+# Design Agent v2 — Brand System Carousels
 
 **Read `.cursor/rules/design.mdc` before every run. Hard constraint, not reference.**
 
+Brand assets: `assets/brand/` (logo, hex grid, tokens.css)
+
 ## Never
 
-- Generate random startup graphics
-- Call image tool without scored YAML brief
+- Generate random startup graphics or generic AI art
 - Use colors or fonts outside brand spec
+- Skip design score before delivery
 
 ## Step 1 — Classify Visual Category
 
@@ -23,54 +25,43 @@ description: Brand-first YAML design brief generator for Hustronix visuals. NOT 
 | framework / research insight | execution_model |
 | category radar / vision | future_of_organizations |
 
-## Step 2 — Check Visual Pattern Library
+## Step 2 — Generate Carousel
 
 ```bash
-python scripts/vault_query.py list visual_patterns --limit 10
+python scripts/generate_carousel.py --idea-id {id}
+python scripts/generate_carousel.py --option {1|2|3}
+python scripts/generate_carousel.py --idea-id {id} --single
 ```
 
-Prefer top-performing patterns from `vault/visual_patterns/`.
+This writes:
+- `assets/generated/{id}/design-brief.yaml`
+- `assets/generated/{id}/slides/01-hook.html` (+ PNG if renderer available)
+- `assets/generated/{id}/preview.html`
 
-## Step 3 — Generate YAML Brief
+## Step 3 — Design Score
 
-Write `assets/generated/{draft_id}/design-brief.yaml`:
-
-```yaml
-topic: Decision Intelligence
-audience: Seed-Series B Founders
-visual_type: Executive Carousel
-visual_category: decision_pattern
-brand_rules:
-  background: "#0A0A0A"
-  typography: "#EDEDED"
-  accent: "#D4AF37"
-  font: Inter
-layout: Minimal, Linear-inspired
-slides:
-  - name: Hook
-    content: "..."
-  - name: Problem
-    content: "..."
-  - name: Framework
-    content: "..."
-  - name: Example
-    content: "..."
-  - name: Insight
-    content: "..."
-  - name: CTA
-    content: "..."
+```bash
+python scripts/score_design.py {draft_id} decision_pattern 9 10 8 9 1
 ```
 
-Write per-slide specs to `assets/generated/{draft_id}/slide-specs/`.
+## Step 4 — Slack Workflow
 
-## Step 4 — Design Score
+User replies `carousel 1` | `carousel 2` | `carousel 3` in #marketing-os.
 
-Run design-scorer skill / `python scripts/score_design.py` before any image generation.
+Automation runs `scripts/slack_generate_carousel.py`.
 
-## Step 5 — Generate Images (only if score passes)
+User uploads PNG slides to LinkedIn as document carousel alongside approved text post.
 
-Use Cursor image generation with brief as input. One image per slide.
+## Visual Categories → Slide Sets
+
+| Category | Slides |
+|----------|--------|
+| decision_pattern | Hook, Trigger, Decision, Outcome, Lesson, CTA |
+| founder_insight | Quote, Context, Pattern, Framework, Question |
+| execution_model | Hook, Problem, Framework, Example, Insight, CTA |
+| strategic_question | Question, Context, Framework, CTA |
+| single_image | Insight (one 1080×1080 card) |
 
 ## Principle
 
-Every visual = one strategic insight. Clarity > Creativity.
+Every visual = one strategic insight. Clarity > Creativity. Calm, precise, confident — no hype.

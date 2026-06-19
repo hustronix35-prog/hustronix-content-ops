@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 48" fill="none">
+  <g transform="translate(0,0)">
+    <path d="M24 2 L44 13.5 V36.5 L24 48 L4 36.5 V13.5 Z" stroke="#EDEDED" stroke-width="1.5" fill="#0A0A0A"/>
+    <path d="M24 8 V40" stroke="#D4AF37" stroke-width="2"/>
+    <circle cx="24" cy="8" r="2.5" fill="#D4AF37"/>
+    <circle cx="24" cy="40" r="2.5" fill="#D4AF37"/>
+    <path d="M16 16 H32 M16 24 H32 M16 32 H32" stroke="#EDEDED" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+  <text x="60" y="32" font-family="Inter, sans-serif" font-size="22" font-weight="700" fill="#EDEDED" letter-spacing="2">HUSTRO</text>
+  <text x="158" y="32" font-family="Inter, sans-serif" font-size="22" font-weight="700" fill="#D4AF37" letter-spacing="2">NIX</text>
+</svg>

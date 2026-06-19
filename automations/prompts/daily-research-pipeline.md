@@ -17,28 +17,29 @@ Run in order:
    - Extract decision_patterns where applicable
 
 3. CONTENT STRATEGIST
-   - Generate 3-5 content ideas
-   - Enforce source mix: 40% research, 40% founder, 20% building Hustronix
+   - Ensure at least 3 pending content ideas (40% research, 40% founder, 20% building)
    - Insert into content_ideas with status pending
-   - Update review/queue.md
+   - Do not duplicate existing hooks
 
-4. RUN PIPELINE SCRIPT
+4. RUN PIPELINE
    - Execute: python scripts/run_daily_pipeline.py
-   - Or: python scripts/daily_digest.py
+   - Generates 3 LinkedIn options (Founder Voice v1.0):
+     • Default 180–300 words (most days)
+     • Short 80–150 words (quick observations)
+     • Deep 300–500 words (research / building — rare)
+     • Never exceed 500 words
 
-5. SLACK SUMMARY
-   - Use Send to Slack to post to #marketing-os with:
-     • Vault KPIs (founders count, pending ideas, decision patterns)
-     • List of pending ideas (id + hook)
-     • Top strategic question by times_seen
-     • Reminder: approve with "python scripts/approve_idea.py {id}"
+5. SLACK — POST OPTIONS ONLY
+   - Use Send to Slack to post to #marketing-os
+   - Post the full slack_message from post_options (NOT the long daily digest)
+   - Include at top: founders count + pending ideas count (one line KPIs)
+   - End with: Reply *approve 1*, *approve 2*, or *approve 3* to publish to LinkedIn
 
 Rules:
 - Never sound like AI hype
-- Never auto-publish content
+- Do NOT publish without user replying `publish` in Slack
+- Read `.cursor/rules/founder-voice.mdc` before writing or posting
+- Morning options end with: `select 1|2|3` → `carousel` (optional) → `publish`
 - Founder intelligence is primary KPI (target: 100 founders)
-- Do not duplicate existing hooks in content_ideas
 
-Primary action: run python scripts/run_daily_pipeline.py first.
-Post the contents of analytics/reports/daily-digest-{date}.md to Slack.
-Do not manually rewrite ideas unless pending ideas < 3.
+Primary action: run python scripts/run_daily_pipeline.py first, then post post_options.slack_message to Slack.

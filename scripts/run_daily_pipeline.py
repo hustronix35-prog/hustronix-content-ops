@@ -148,7 +148,7 @@ def rebuild_queue(conn: sqlite3.Connection) -> None:
         lines.append(f"- **Pillar:** {row['pillar']}")
         lines.append(f"- **Source:** {row['source_type']} (id: {row['source_id']})")
         lines.append(f"- **Hook:** {row['hook']}")
-        lines.append(f"- **Approve:** `python scripts/approve_idea.py {row['id']}`")
+        lines.append(f"- **Publish:** reply `approve 1`, `approve 2`, or `approve 3` after morning options")
         lines.append("")
 
     REVIEW_QUEUE.write_text("\n".join(lines), encoding="utf-8")
@@ -158,6 +158,21 @@ def step_digest() -> Path:
     subprocess.run([sys.executable, str(ROOT / "scripts" / "daily_digest.py")], check=True)
     date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     return REPORTS / f"daily-digest-{date}.md"
+
+
+def step_post_options(date: str) -> dict:
+    result = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "generate_post_options.py"), "--json"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        return {"error": result.stderr or "generate_post_options failed"}
+    try:
+        return json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return {"slack_message": result.stdout, "batch_date": date}
 
 
 def main() -> None:
@@ -173,6 +188,7 @@ def main() -> None:
     conn.close()
 
     digest_path = step_digest()
+    post_options = step_post_options(date)
 
     summary = {
         "pipeline": "Hustronix Daily Research Pipeline",
@@ -181,8 +197,9 @@ def main() -> None:
         "research": research,
         "new_ideas": new_ideas,
         "digest": str(digest_path),
+        "post_options": post_options,
         "queue": str(REVIEW_QUEUE),
-        "slack": "skipped (no Slack MCP in session — see digest file)",
+        "slack": post_options.get("slack_message", "See post-options report"),
     }
 
     out = REPORTS / f"pipeline-run-{date}.json"

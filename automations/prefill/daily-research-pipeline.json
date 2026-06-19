@@ -1,12 +1,12 @@
 {
   "name": "Hustronix Daily Research Pipeline",
-  "description": "Daily Marketing OS: ingest, research, content ideas, digest to Slack. Repo: hustronix35-prog/marketing-os",
+  "description": "Daily: research + 3 short LinkedIn options to Slack. User approves with approve 1|2|3. Repo: hustronix35-prog/marketing-os",
   "workflow": {
     "triggers": [{ "cron": { "cron": "0 7 * * *" } }],
     "actions": [{ "slack": {} }],
     "prompts": [
       {
-        "text": "You are running the Hustronix Marketing OS daily pipeline in repo hustronix35-prog/marketing-os on branch master.\n\nRead these project rules first:\n- .cursor/rules/hustronix-brand.mdc\n- Skills in .cursor/skills/\n\nRun in order:\n\n1. SOURCE INGESTION\n   - Check raw_sources for processed=0 rows\n   - If new URLs were added, ingest them via scripts/ingest_url.py\n\n2. RESEARCH AGENT\n   - Process unprocessed raw_sources\n   - Extract insights into research_insights table\n   - Write vault/insights/{date}.md\n   - Extract decision_patterns where applicable\n\n3. CONTENT STRATEGIST\n   - Generate 3-5 content ideas\n   - Enforce source mix: 40% research, 40% founder, 20% building Hustronix\n   - Insert into content_ideas with status pending\n   - Update review/queue.md\n\n4. RUN PIPELINE SCRIPT\n   - Execute: python scripts/run_daily_pipeline.py\n   - Or: python scripts/daily_digest.py\n\n5. SLACK SUMMARY\n   - Use Send to Slack to post to #marketing-os with:\n     • Vault KPIs (founders count, pending ideas, decision patterns)\n     • List of pending ideas (id + hook)\n     • Top strategic question by times_seen\n     • Reminder: approve with \"python scripts/approve_idea.py {id}\"\n\nRules:\n- Never sound like AI hype\n- Never auto-publish content\n- Founder intelligence is primary KPI (target: 100 founders)\n- Do not duplicate existing hooks in content_ideas\n\nPrimary action: run python scripts/run_daily_pipeline.py first.\nPost the contents of analytics/reports/daily-digest-{date}.md to Slack.\nDo not manually rewrite ideas unless pending ideas < 3."
+        "text": "You are running the Hustronix Marketing OS daily pipeline in repo hustronix35-prog/marketing-os on branch master.\n\nRead .cursor/rules/hustronix-brand.mdc and skills in .cursor/skills/\n\n1. Ingest + research + strategist (ensure 3+ pending ideas)\n2. Run: python scripts/run_daily_pipeline.py\n3. Send to Slack #marketing-os: one-line KPIs + post_options.slack_message (3 SHORT options)\n4. User replies approve 1|2|3 — handled by separate automation\n\nRules: short posts only, no AI hype, never publish without Slack approval.\n\nPrimary: run run_daily_pipeline.py then post slack_message to Slack."
       }
     ],
     "gitConfig": {

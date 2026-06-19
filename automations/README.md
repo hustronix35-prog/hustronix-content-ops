@@ -1,15 +1,23 @@
 # Cursor Automations Setup
 
-## Quick commands (no Slack required)
+**Zero-terminal daily posting:** See [SLACK_LINKEDIN_SETUP.md](./SLACK_LINKEDIN_SETUP.md)
+
+## Your daily workflow (Slack only)
+
+1. **7:00 AM** — Daily Research Pipeline posts **3 post options** in `#marketing-os`
+2. **`select 2`** — pick your post
+3. **`carousel`** — generate slides + upload to Slack (optional)
+4. **`publish`** — post text (+ carousel) to LinkedIn
+
+One automation handles all commands: `automations/prefill/slack-post-workflow.json`
+
+Full setup: [SLACK_LINKEDIN_SETUP.md](./SLACK_LINKEDIN_SETUP.md)
+
+## Quick commands (optional — local testing only)
 
 ```bash
-# Daily digest (replaces morning Slack post until Slack MCP connected)
-python scripts/daily_digest.py
-
-# Approve an idea → full pipeline (score, drafts, design brief, distribution)
-python scripts/approve_idea.py 3
-
-# Vault stats
+python scripts/generate_post_options.py
+python scripts/slack_approve_and_post.py "approve 2"
 python scripts/vault_query.py stats
 ```
 
@@ -71,7 +79,27 @@ Or use the Automations UI with these specs:
 | **Trigger** | Slack message matching `log founder conversation` |
 | **Prompt** | Run `founder-intelligence-agent` with conversation notes from thread. Full 5-step extraction pipeline. |
 
-### Approve Idea
+### Generate Carousel
+
+| Field | Value |
+|-------|-------|
+| **Trigger** | Slack keywords: `carousel 1`, `carousel 2`, `carousel 3` |
+| **Prompt** | Run `python scripts/slack_generate_carousel.py "{message}"` |
+| **Prefill** | `automations/prefill/slack-generate-carousel.json` |
+| **Output** | `assets/generated/{id}/slides/*.png` + `preview.html` |
+
+Brand system: `assets/brand/` · Rules: `.cursor/rules/design.mdc`
+
+### Approve & Post to LinkedIn (primary)
+
+| Field | Value |
+|-------|-------|
+| **Trigger** | Slack keywords: `approve 1`, `approve 2`, `approve 3` |
+| **Prompt** | Run `python scripts/slack_approve_and_post.py "{message}"`. Reply with confirmation. |
+| **Secrets** | `LINKEDIN_ACCESS_TOKEN`, `LINKEDIN_AUTHOR_URN` |
+| **Prefill** | `automations/prefill/slack-approve-and-post.json` |
+
+### Approve Idea (legacy — full drafts/carousels)
 
 | Field | Value |
 |-------|-------|
@@ -82,8 +110,8 @@ Or use the Automations UI with these specs:
 
 Cursor Automations must be finalized in the Automations UI. This file is the specification — use "create a Cursor automation" in Agents Window to draft each one.
 
-## Daily Review (< 30 min)
+## Daily Review (< 5 min)
 
-1. Morning digest in #marketing-os (10 min)
-2. `approve idea {id}` + light edit drafts (10 min)
-3. Log founder conversation OR send 2-3 approved DMs (10 min)
+1. Read 3 options in #marketing-os (2 min)
+2. Reply `approve 1` / `approve 2` / `approve 3` (10 sec)
+3. Optional: log founder conversation or send DMs (rest of time budget)

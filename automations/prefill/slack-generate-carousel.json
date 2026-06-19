@@ -1,0 +1,18 @@
+{
+  "name": "Hustronix Generate Carousel",
+  "description": "Slack carousel 1|2|3 → brand-system carousel PNGs. Repo: hustronix35-prog/marketing-os",
+  "workflow": {
+    "triggers": [{ "slackTrigger": {} }],
+    "actions": [{ "slack": {} }],
+    "prompts": [
+      {
+        "text": "When Slack message matches carousel 1, carousel 2, or carousel 3:\n\n1. Run: python scripts/slack_generate_carousel.py \"{message}\"\n2. Reply in thread with slack_confirmation\n3. Uses Hustronix Design System (black/gold/Inter, hex grid, logo)\n\nRepo: hustronix35-prog/marketing-os branch master"
+      }
+    ],
+    "gitConfig": {
+      "repo": "hustronix35-prog/marketing-os",
+      "branch": "master"
+    },
+    "memoryEnabled": true
+  }
+}

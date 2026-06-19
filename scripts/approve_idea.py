@@ -20,6 +20,8 @@ DIST = ROOT / "vault" / "published"
 sys.path.insert(0, str(ROOT / "scripts"))
 from score_content import store_score as store_content_score  # noqa: E402
 from score_design import store_score as store_design_score  # noqa: E402
+from lib.carousel_builder import build_brief, visual_category as carousel_visual_category  # noqa: E402
+from lib.carousel_renderer import render_carousel, write_brief_yaml  # noqa: E402
 
 
 def connect() -> sqlite3.Connection:
@@ -258,71 +260,28 @@ Hustronix is building exactly that — Decision Intelligence for founder-led sta
 
 
 def visual_category(idea: sqlite3.Row, ctx: dict) -> str:
-    if idea["source_type"] == "founder":
-        return "founder_insight" if idea["post_type"] == "Interview" else "decision_pattern"
-    if idea["post_type"] in ("Framework", "Contrarian"):
-        return "execution_model"
-    if idea["post_type"] == "Research":
-        return "decision_pattern"
-    return "future_of_organizations"
+    return carousel_visual_category(dict(idea))
 
 
 def write_design_brief(draft_id: int, idea: sqlite3.Row, ctx: dict) -> Path:
     out = ASSETS / str(draft_id)
-    out.mkdir(parents=True, exist_ok=True)
-    cat = visual_category(idea, ctx)
-
-    slides = {
-        "decision_pattern": ["Hook", "Trigger", "Decision", "Outcome", "Lesson", "CTA"],
-        "founder_insight": ["Quote", "Context", "Pattern", "Framework", "Question"],
-        "execution_model": ["Hook", "Problem", "Framework", "Example", "Insight", "CTA"],
-        "strategic_question": ["Question", "Context", "Framework", "CTA"],
-        "future_of_organizations": ["Vision", "Shift", "Model", "Implication", "CTA"],
-    }.get(cat, ["Hook", "Insight", "CTA"])
-
-    brief = {
-        "topic": idea["pillar"],
-        "audience": "Seed-Series B Founders",
-        "visual_type": "Executive Carousel",
-        "visual_category": cat,
-        "brand_rules": {
-            "background": "#0A0A0A",
-            "typography": "#EDEDED",
-            "accent": "#D4AF37",
-            "font": "Inter",
-        },
-        "layout": "Minimal, Linear-inspired",
-        "hook": idea["hook"],
-        "slides": [{"name": s, "content": f"{s} content for idea {idea['id']}"} for s in slides],
-    }
-
+    idea_dict = dict(idea)
+    brief = build_brief(idea_dict, visual_type="carousel")
     path = out / "design-brief.yaml"
-    lines = [
-        f"topic: {brief['topic']}",
-        f"audience: {brief['audience']}",
-        f"visual_type: {brief['visual_type']}",
-        f"visual_category: {brief['visual_category']}",
-        "brand_rules:",
-        "  background: \"#0A0A0A\"",
-        "  typography: \"#EDEDED\"",
-        "  accent: \"#D4AF37\"",
-        "  font: Inter",
-        "layout: Minimal, Linear-inspired",
-        "slides:",
-    ]
-    for slide in brief["slides"]:
-        lines.append(f"  - name: {slide['name']}")
-        lines.append(f"    content: \"{idea['hook'][:80]}...\"")
-
-    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    write_brief_yaml(brief, path)
+    manifest = render_carousel(brief, out, render_png=True)
 
     specs = out / "slide-specs"
-    specs.mkdir(exist_ok=True)
+    specs.mkdir(parents=True, exist_ok=True)
     for slide in brief["slides"]:
-        (specs / f"{slide['name'].lower().replace(' ', '_')}.md").write_text(
-            f"# Slide: {slide['name']}\n\nBackground: #0A0A0A\nText: #EDEDED\nAccent: #D4AF37\nFont: Inter Bold\n",
+        name = slide["name"] if isinstance(slide, dict) else slide
+        (specs / f"{name.lower().replace(' ', '_')}.md").write_text(
+            f"# Slide: {name}\n\n"
+            f"Background: #0A0A0A\nText: #EDEDED\nAccent: #D4AF37\nFont: Inter\n"
+            f"Brand: Design System v1.0\n",
             encoding="utf-8",
         )
+    (out / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     return path
 
 
@@ -333,7 +292,8 @@ def write_distribution(draft_id: int, drafts: dict[str, str], idea_id: int) -> P
         f"# Distribution Package — Idea #{idea_id}\n\n"
         f"## LinkedIn Personal (Priority 1)\n\n"
         f"{drafts['linkedin_long']}\n\n"
-        f"**Carousel:** assets/generated/{draft_id}/\n\n"
+        f"**Carousel:** assets/generated/{draft_id}/preview.html\n"
+        f"**PNG slides:** assets/generated/{draft_id}/slides/*.png\n\n"
         f"## LinkedIn Company (Priority 2)\n\n"
         f"{drafts['linkedin_short']}\n\n"
         f"## Twitter/X (Priority 3)\n\n"

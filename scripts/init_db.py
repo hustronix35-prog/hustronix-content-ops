@@ -228,7 +228,25 @@ CREATE TABLE IF NOT EXISTS founder_outreach (
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
-CREATE INDEX IF NOT EXISTS idx_raw_sources_processed ON raw_sources(processed);
+CREATE TABLE IF NOT EXISTS daily_post_options (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    batch_date TEXT NOT NULL,
+    option_num INTEGER NOT NULL,
+    idea_id INTEGER REFERENCES content_ideas(id),
+    pillar TEXT NOT NULL,
+    post_type TEXT NOT NULL,
+    hook TEXT NOT NULL,
+    body TEXT NOT NULL,
+    char_count INTEGER NOT NULL,
+    status TEXT NOT NULL DEFAULT 'pending',
+    linkedin_post_id TEXT,
+    slack_approved_at TEXT,
+    published_at TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    UNIQUE(batch_date, option_num)
+);
+
+CREATE INDEX IF NOT EXISTS idx_daily_post_options_batch ON daily_post_options(batch_date, status);
 CREATE INDEX IF NOT EXISTS idx_research_insights_source ON research_insights(source_id);
 CREATE INDEX IF NOT EXISTS idx_founder_intelligence_founder ON founder_intelligence(founder_id);
 CREATE INDEX IF NOT EXISTS idx_content_ideas_status ON content_ideas(status);
@@ -294,9 +312,16 @@ def seed_visual_patterns(conn: sqlite3.Connection) -> None:
 
 
 def main() -> None:
+    import sys
+    from pathlib import Path
+
+    sys.path.insert(0, str(Path(__file__).parent))
+    from lib.post_workflow import migrate
+
     conn = get_connection()
     seed_canonical_questions(conn)
     seed_visual_patterns(conn)
+    migrate(conn)
     conn.commit()
     conn.close()
     print(f"Database initialized at {DB_PATH}")

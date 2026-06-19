@@ -23,12 +23,14 @@ INPUTS → INTELLIGENCE → DECISION → EXECUTION
 
 ## Voice Mix
 
+See **founder-voice.mdc** for full Founder Voice Specification v1.0.
+
 | Mode | Share |
 |------|-------|
-| Researcher | 40% |
-| Builder | 30% |
-| Visionary | 20% |
-| Contrarian | 10% |
+| Builder | 40% |
+| Researcher | 30% |
+| Curious Observer | 20% |
+| Visionary | 10% max |
 
 ## Content Source Mix (enforce in content-strategist)
 
@@ -40,17 +42,26 @@ INPUTS → INTELLIGENCE → DECISION → EXECUTION
 
 Founder-sourced ideas get priority over generic research.
 
-## Content Pillars
+## Content Pillars / Themes
 
-- Decision Quality
-- AI Native Companies
-- Founder Context
-- Founder Research
-- Building Hustronix
+Decision Quality, Founder Context, Organizational Learning, AI Native Companies, Building Hustronix, Founder Interviews, Strategic Clarity, Execution Alignment, Product Decisions, Future of Organizations.
+
+Legacy pillar labels in vault may still use: Founder Research, AI Native Organizations.
 
 ## Post Types
 
 Research, Builder, Contrarian, Interview, Framework, Prediction
+
+## LinkedIn Length (founder-voice.mdc)
+
+| Tier | Words |
+|------|-------|
+| Default | 180–300 (most posts) |
+| Deep research | 300–500 |
+| Short observation | 80–150 |
+| **Max** | **500 — never exceed** |
+
+Structure: Observation → Pattern → Thought → Open Question.
 
 ## Hard Bans
 
@@ -58,6 +69,7 @@ Never use:
 - Hype language ("revolutionary", "game-changing", "10x your growth")
 - Generic startup advice ("hustle harder", "move fast break things")
 - AI-sounding phrasing ("In today's fast-paced world", "Let's dive in", "Here's the thing")
+- Influencer openers/endings (see founder-voice.mdc forbidden lists)
 - Em dashes overuse, bullet-heavy LinkedIn spam
 
 Always focus on: Decision Intelligence, Strategic Clarity, Organizational Learning.

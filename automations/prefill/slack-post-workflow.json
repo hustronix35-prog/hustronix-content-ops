@@ -1,0 +1,18 @@
+{
+  "name": "Hustronix Post Workflow",
+  "description": "Slack: select → carousel → publish to LinkedIn. Repo: hustronix35-prog/marketing-os",
+  "workflow": {
+    "triggers": [{ "slackTrigger": {} }],
+    "actions": [{ "slack": {} }],
+    "prompts": [
+      {
+        "text": "Route Slack commands:\n\n1. Run: python scripts/setup_carousel_env.py (skip if validate_carousel_setup.py passes)\n2. Run: python scripts/slack_post_workflow.py \"{message}\"\n\nCommands: select 1|2|3 · carousel · publish\n\nPremium v2 carousels require Playwright Chromium (setup script installs it).\nBrand assets must exist in assets/brand/ on master.\n\nSecrets: LINKEDIN_* (publish), SLACK_BOT_TOKEN + SLACK_CHANNEL_ID (carousel upload)\n\nRepo: hustronix35-prog/marketing-os branch master"
+      }
+    ],
+    "gitConfig": {
+      "repo": "hustronix35-prog/marketing-os",
+      "branch": "master"
+    },
+    "memoryEnabled": true
+  }
+}
