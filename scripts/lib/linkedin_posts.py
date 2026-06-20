@@ -1,4 +1,4 @@
-"""Generate LinkedIn posts in Founder Voice v1.0."""
+"""Generate LinkedIn posts in Founder Voice v2.0 — strict anti-mediocrity gate."""
 
 from __future__ import annotations
 
@@ -29,25 +29,20 @@ LENGTH_TIERS = {
 }
 
 ABSOLUTE_MAX_WORDS = 500
+MAX_UNCERTAINTY_STATEMENTS = 1
 
 OPENINGS = [
+    "I've been talking to founders over the last few weeks while building Hustronix.",
     "One thing I've noticed while talking to founders.",
-    "Something interesting came up this week.",
-    "I've been thinking about this while building Hustronix.",
-    "After talking to a few founders recently.",
-    "A pattern I'm starting to see.",
-    "This surprised me a little.",
-    "We've been experimenting with something on our side.",
-    "I used to think about this differently.",
+    "While working on Hustronix, something keeps showing up in conversations.",
+    "After a few founder conversations this month, a pattern keeps showing up.",
+    "A pattern I'm starting to see while building Hustronix.",
 ]
 
-ENDINGS = [
-    "Still exploring this idea.",
-    "Curious what others think.",
-    "Not sure if this is broadly true yet, but it keeps showing up.",
-    "Would love to hear how others approach this.",
-    "Still trying to understand the pattern.",
-    "This feels important, but I'm still figuring out the edges.",
+CLOSINGS = [
+    "That's a pattern I'm paying close attention to right now.",
+    "I'm starting to think many execution problems begin as decision problems.",
+    "That feels like the right question to sit with for a while.",
 ]
 
 FORBIDDEN_PHRASES = [
@@ -70,6 +65,26 @@ FORBIDDEN_PHRASES = [
     r"revolutionary",
     r"game-changing",
     r"10x your growth",
+    r"curious what others think",
+    r"still exploring this idea",
+    r"i could be wrong",
+    r"not sure if this is broadly true",
+    r"i'm still trying to understand whether this pattern holds at scale",
+    r"it might be specific to the founders i've spoken with so far",
+]
+
+UNCERTAINTY_PATTERNS = [
+    r"curious what others think",
+    r"still exploring this idea",
+    r"i could be wrong",
+    r"not sure if this is broadly true",
+    r"i'm still trying to understand whether",
+    r"it might be specific to the founders",
+    r"still trying to understand the pattern",
+    r"still figuring out how to",
+    r"i don't think we have the full answer yet",
+    r"would love to hear how others",
+    r"this feels important, but i'm still",
 ]
 
 
@@ -90,9 +105,9 @@ def pick_opening(idea: dict) -> str:
     return OPENINGS[idx]
 
 
-def pick_ending(idea: dict) -> str:
-    idx = ((idea.get("id") or 0) + 3) % len(ENDINGS)
-    return ENDINGS[idx]
+def pick_closing(idea: dict) -> str:
+    idx = ((idea.get("id") or 0) + 2) % len(CLOSINGS)
+    return CLOSINGS[idx]
 
 
 def validate_voice(text: str) -> list[str]:
@@ -101,39 +116,154 @@ def validate_voice(text: str) -> list[str]:
     for pattern in FORBIDDEN_PHRASES:
         if re.search(pattern, lower, re.MULTILINE):
             hits.append(pattern)
+    if count_uncertainty(text) > MAX_UNCERTAINTY_STATEMENTS:
+        hits.append(f"too_many_uncertainty_statements>{MAX_UNCERTAINTY_STATEMENTS}")
     return hits
 
 
-def trim_to_word_range(text: str, min_words: int, max_words: int) -> str:
-    text = text.strip()
+def count_uncertainty(text: str) -> int:
+    lower = text.lower()
+    count = 0
+    for pattern in UNCERTAINTY_PATTERNS:
+        count += len(re.findall(pattern, lower))
+    return count
+
+
+def _split_paragraphs(text: str) -> list[str]:
+    return [p.strip() for p in re.split(r"\n\s*\n", text.strip()) if p.strip()]
+
+
+def _join_paragraphs(paragraphs: list[str]) -> str:
+    return "\n\n".join(paragraphs)
+
+
+def _normalize_para(para: str) -> str:
+    return re.sub(r"\s+", " ", re.sub(r"[^\w\s]", "", para.strip().lower()))
+
+
+def _paragraph_in_text(para: str, text: str) -> bool:
+    a = _normalize_para(para)
+    b = _normalize_para(text)
+    if not a or len(a) < 12:
+        return False
+    return a in b or any(a in _normalize_para(p) for p in _split_paragraphs(text))
+
+
+def _dedupe_paragraphs(paragraphs: list[str]) -> list[str]:
+    seen: list[str] = []
+    for para in paragraphs:
+        if any(_paragraph_in_text(para, s) for s in seen):
+            continue
+        seen.append(para)
+    return seen
+
+
+def enforce_voice_quality(text: str, idea: dict) -> str:
+    """Remove banned phrases and cap uncertainty at one statement."""
+    paragraphs = _dedupe_paragraphs(_split_paragraphs(text))
+    cleaned: list[str] = []
+    uncertainty_used = 0
+
+    for para in paragraphs:
+        lower = para.lower()
+        skip = False
+        for pattern in FORBIDDEN_PHRASES:
+            if re.search(pattern, lower):
+                skip = True
+                break
+        if skip:
+            continue
+
+        is_uncertain = any(re.search(p, lower) for p in UNCERTAINTY_PATTERNS)
+        if is_uncertain:
+            if uncertainty_used >= MAX_UNCERTAINTY_STATEMENTS:
+                continue
+            uncertainty_used += 1
+        cleaned.append(para)
+
+    if not cleaned:
+        cleaned = _dedupe_paragraphs(_split_paragraphs(text))[:1] or [text]
+
+    joined = _join_paragraphs(cleaned)
+    last = cleaned[-1].lower()
+    has_closing = any(
+        phrase in joined.lower()
+        for phrase in (
+            "paying close attention",
+            "begin as decision problems",
+            "right question to sit with",
+            "right call",
+            "decisions matter more than the output",
+        )
+    )
+    if not has_closing and count_uncertainty(joined) == 0:
+        cleaned.append(pick_closing(idea))
+
+    return _join_paragraphs(_dedupe_paragraphs(cleaned))
+
+
+def trim_to_word_range(text: str, min_words: int, max_words: int, idea: dict) -> str:
+    text = enforce_voice_quality(text, idea)
     max_words = min(max_words, ABSOLUTE_MAX_WORDS)
     wc = word_count(text)
     if wc > max_words:
         words = text.split()
-        trimmed = " ".join(words[:max_words])
-        return trimmed
-    if wc < min_words:
-        gap = min_words - wc
-        return f"{text}\n\n{_humility_padding(gap)}"
-    return text
+        text = " ".join(words[:max_words])
+        text = enforce_voice_quality(text, idea)
+    elif wc < min_words:
+        text = _extend_with_substance(text, idea, min_words - wc)
+    return enforce_voice_quality(text, idea)
 
 
-def _humility_padding(gap: int) -> str:
-    lines = [
-        "I'm still trying to understand whether this pattern holds at scale.",
-        "It might be specific to the founders I've spoken with so far.",
-        "Still exploring this idea.",
-        "Curious what others think.",
-    ]
-    out: list[str] = []
-    count = 0
+def _extend_with_substance(text: str, idea: dict, gap: int) -> str:
+    """Add concrete example lines — never pad with repeated humility."""
+    pillar = idea.get("pillar", "Decision Quality")
+    post_type = idea.get("post_type", "Research")
+    extras = {
+        "Contrarian": [
+            "When we talk to founders about where slowdown actually starts, the answer is rarely we need more tools.",
+            "It's usually that teams are re-deciding the same thing because context didn't travel.",
+            "That shows up before anyone calls it a hiring problem or a process problem.",
+        ],
+        "Builder": [
+            "The loop only works if we're honest about what we're trying to learn — not what will perform.",
+            "Dogfooding means killing angles that score well but don't feel true.",
+            "That's the bar we're holding ourselves to while building Hustronix.",
+        ],
+        "Research": [
+            "In three separate conversations this month, founders described the same texture.",
+            "That showed up before anyone called it a process problem.",
+            "The gap appears long before teams name it as a decision problem.",
+        ],
+        "Framework": [
+            "Trigger. Decision. Outcome. Lesson.",
+            "Not as a process doc — as a way to check whether a decision still connects to why it was made.",
+        ],
+    }
+    lines = extras.get(post_type, extras.get("Contrarian", []))
+    if pillar == "Founder Context":
+        lines = [
+            "Sales sees one part.",
+            "Product sees another.",
+            "Leadership tries to connect everything.",
+        ]
+    out = _dedupe_paragraphs(_split_paragraphs(text))
+    text_blob = _join_paragraphs(out).lower()
+    added = 0
     i = 0
-    while count < gap and i < len(lines) * 3:
+    insert_at = max(len(out) - 1, 0) if out else 0
+    while added < gap and i < len(lines) * 3:
         line = lines[i % len(lines)]
-        out.append(line)
-        count += word_count(line)
+        norm = _normalize_para(line)
+        if norm and norm not in _normalize_para(text_blob) and not any(
+            _paragraph_in_text(line, p) for p in out
+        ):
+            out.insert(insert_at, line)
+            insert_at += 1
+            text_blob = _join_paragraphs(out).lower()
+            added += word_count(line)
         i += 1
-    return "\n\n".join(out)
+    return _join_paragraphs(_dedupe_paragraphs(out))
 
 
 def pick_tiers_for_batch(conn, ideas: list) -> list[str]:
@@ -183,57 +313,69 @@ def pick_tiers_for_batch(conn, ideas: list) -> list[str]:
 
 
 def _short_body(idea: dict) -> str:
-    opening = pick_opening(idea)
-    ending = pick_ending(idea)
     hook = idea["hook"]
-
-    return f"""{opening}
-
-{hook}
+    return f"""{hook}
 
 Most founders I talk to aren't lacking information.
 
 They have dashboards, reports, and customer feedback.
 
-The hard part is deciding what actually matters.
+The hard part is deciding what actually matters when a decision has to be made.
 
 I'm starting to think that's a different problem than execution.
 
-{ending}"""
+{pick_closing(idea)}"""
 
 
-def _default_body(idea: dict) -> str:
-    opening = pick_opening(idea)
-    ending = pick_ending(idea)
+def _contrarian_body(idea: dict) -> str:
     hook = idea["hook"]
-    pillar = idea["pillar"]
-    post_type = idea["post_type"]
-    source_type = idea.get("source_type", "research")
+    # Gold-standard structure from content-feedback.md
+    line1, line2 = hook, ""
+    if ". " in hook:
+        parts = hook.split(". ", 1)
+        line1 = parts[0].rstrip(".") + "."
+        line2 = parts[1]
+    elif hook.count(".") >= 1:
+        line1 = hook
+    else:
+        line1 = hook
+        line2 = "Your decision infrastructure might be."
 
-    if source_type == "founder" or post_type == "Interview":
-        return f"""{opening}
+    opening = pick_opening(idea)
+    return f"""{line1}
+{line2}
 
-{hook}
+{opening}
 
-After a few founder conversations this month, a pattern keeps showing up.
+Teams have more information than ever.
 
-They have more signal than ever — customer calls, pipeline data, product metrics.
+Customer feedback.
+Product analytics.
+Revenue dashboards.
+Internal docs.
 
-But when a real decision comes up, the context still lives in one person's head.
+The challenge isn't collecting information.
 
-I'm starting to believe the next layer of startup software won't be about collecting more information.
+It's knowing what matters when a decision has to be made.
 
-It will be about helping teams decide with shared context.
+As companies grow, context gets fragmented.
 
-While working on Hustronix, I keep coming back to a simple loop:
-what triggered the decision, what was chosen, what happened, what we learned.
+Sales sees one part.
+Product sees another.
+Leadership tries to connect everything.
 
-Not sure we've built enough products around that yet.
+When we talk to founders about where slowdown actually starts, the answer is rarely "we need more tools."
 
-{ending}"""
+It's usually that teams are re-deciding the same thing because context didn't travel.
 
-    if source_type == "building" or post_type == "Builder":
-        return f"""While working on Hustronix this week, something shifted in how I think about our marketing.
+I'm starting to think many execution problems begin as decision problems.
+
+That's a pattern I'm paying close attention to right now."""
+
+
+def _builder_body(idea: dict) -> str:
+    hook = idea["hook"]
+    return f"""While working on Hustronix this week, something shifted in how I think about our marketing.
 
 {hook}
 
@@ -250,39 +392,42 @@ Last week we killed a post angle that might have performed well but didn't feel 
 
 That felt like the right call.
 
-I'm still figuring out how to share that process without sounding like we're performing "building in public."
+We're sharing the process because the decisions matter more than the output."""
 
-{ending}"""
 
-    if post_type == "Contrarian":
-        return f"""{opening}
-
-{hook}
-
-We spend a lot of time measuring execution — velocity, output, activity.
-
-I wonder if we spend enough time measuring decision quality.
-
-As startups grow, I've noticed decisions get harder.
-
-Not because people become less capable.
-
-Because context gets scattered.
-
-Sales sees one slice.
-Product sees another.
-The founder still holds the full picture.
-
-I'm starting to think slowdown often shows up before anyone identifies it as a decision problem.
-
-{ending}"""
-
-    if post_type == "Framework":
-        return f"""{opening}
+def _research_body(idea: dict) -> str:
+    hook = idea["hook"]
+    pillar = idea.get("pillar", "Decision Quality")
+    return f"""{pick_opening(idea)}
 
 {hook}
 
-I've been trying to name something I see in early-stage teams.
+In three separate conversations this month, founders described the same texture.
+
+Not a tooling gap — a judgment gap.
+
+One founder put it plainly: "We're moving, but alignment got harder."
+
+They had customer calls, pipeline data, and product metrics.
+
+When a real strategic call came up, the context still lived in one person's head.
+
+That's what I'm tracking in our {pillar.lower()} research at Hustronix.
+
+The interesting part isn't whether teams have enough dashboards.
+
+It's whether anyone can explain why the last major decision was made without the founder in the room.
+
+I'm starting to think slowdown often shows up before anyone names it as a decision problem.
+
+{pick_closing(idea)}"""
+
+
+def _framework_body(idea: dict) -> str:
+    hook = idea["hook"]
+    return f"""{pick_opening(idea)}
+
+{hook}
 
 When the company is small, decisions are fast because context is shared by default.
 
@@ -295,35 +440,56 @@ Not as a process doc.
 
 As a way to check whether a decision is still connected to why it was made.
 
-I'm still early in understanding how useful this is outside our own work at Hustronix.
+We tried this on our own roadmap calls at Hustronix last month.
 
-{ending}"""
+It surfaced two decisions we'd been reopening without realizing it.
 
-    return f"""{opening}
+{pick_closing(idea)}"""
+
+
+def _founder_body(idea: dict) -> str:
+    hook = idea["hook"]
+    return f"""{pick_opening(idea)}
 
 {hook}
 
-I've been reading and talking to founders about {pillar.lower()}.
+After a few founder conversations this month, the same detail keeps appearing.
 
-The interesting part isn't the tools.
+They have more signal than ever — customer calls, pipeline data, product metrics.
 
-It's what happens when teams scale and decisions stop feeling shared.
+But when a real decision comes up, the context still lives in one person's head.
 
-Founders describe the same texture:
-"We're moving, but alignment got harder."
+I'm starting to believe the next layer of startup software won't be about collecting more information.
 
-I'm starting to think that's less about execution discipline and more about decision clarity.
+It will be about helping teams decide with shared context.
 
-Something I'm noticing in our research at Hustronix — the gap shows up long before teams name it as a problem.
+While working on Hustronix, I keep coming back to a simple loop:
+what triggered the decision, what was chosen, what happened, what we learned.
 
-{ending}"""
+{pick_closing(idea)}"""
+
+
+def _default_body(idea: dict) -> str:
+    post_type = idea.get("post_type", "Research")
+    source_type = idea.get("source_type", "research")
+
+    if post_type == "Contrarian":
+        return _contrarian_body(idea)
+    if source_type == "building" or post_type == "Builder":
+        return _builder_body(idea)
+    if post_type == "Research":
+        return _research_body(idea)
+    if post_type == "Framework":
+        return _framework_body(idea)
+    if source_type == "founder" or post_type == "Interview":
+        return _founder_body(idea)
+
+    return _research_body(idea)
 
 
 def _deep_body(idea: dict) -> str:
-    opening = pick_opening(idea)
-    ending = pick_ending(idea)
     hook = idea["hook"]
-    pillar = idea["pillar"]
+    pillar = idea.get("pillar", "Decision Quality")
     source_type = idea.get("source_type", "research")
     post_type = idea.get("post_type", "Research")
 
@@ -342,10 +508,6 @@ Should we optimize for reach or for founder conversations?
 Should we publish before we fully understand a pattern?
 What do we do when a post idea scores well on engagement but poorly on truth?
 
-Those aren't marketing questions.
-
-They're product questions about what kind of company we're building.
-
 We structured our marketing system around the same loop we're trying to sell:
 inputs, intelligence, decision, execution.
 
@@ -362,28 +524,19 @@ It would have gotten reactions.
 
 It wouldn't have helped us understand founders better.
 
-I'm starting to believe that's the bar for us:
-does this post help us learn something true about decision-making at startups?
-
-If not, it's noise — even if it's "good content."
-
-I'm still figuring out how to do this consistently without turning every week into meta-commentary about marketing.
-
-But the direction feels right.
+The bar for us: does this post help us learn something true about decision-making at startups?
 
 We're not trying to sound like a content creator.
 
 We're trying to sound like founders studying a problem while building toward it.
 
-{ending}"""
+{pick_closing(idea)}"""
 
-    return f"""{opening}
+    return f"""{pick_opening(idea)}
 
 {hook}
 
 I've spent the last few months on {pillar.lower()} — mostly through founder conversations, not surveys.
-
-Here's what I think I'm seeing.
 
 Stage one: the founder is in every decision.
 
@@ -398,8 +551,6 @@ Execution looks healthy — maybe even faster in pockets.
 But strategic decisions start taking longer.
 
 Founders often describe this as a hiring problem or a process problem.
-
-I'm not sure it is.
 
 What I hear underneath is fragmentation.
 
@@ -417,14 +568,11 @@ Not another tool for generating more output.
 
 Something that helps teams preserve why a decision was made — so they're not re-deciding the same thing every quarter.
 
-I don't think we have the full answer yet.
+Can your team explain your last three major decisions without you in the room?
 
-But the question feels worth sitting with:
-can your team explain your last three major decisions without you in the room?
+If the honest answer is no, that might be where the friction is coming from.
 
-If the honest answer is no, I wonder if that's where the friction is coming from.
-
-{ending}"""
+{pick_closing(idea)}"""
 
 
 def post_from_idea(idea: dict, tier: str = "default") -> dict:
@@ -435,10 +583,10 @@ def post_from_idea(idea: dict, tier: str = "default") -> dict:
         "deep": _deep_body,
     }
     body = builders.get(tier, _default_body)(idea)
-    body = trim_to_word_range(body, spec["min_words"], spec["max_words"])
+    body = trim_to_word_range(body, spec["min_words"], spec["max_words"], idea)
     wc = word_count(body)
     if wc > ABSOLUTE_MAX_WORDS:
-        body = trim_to_word_range(body, spec["min_words"], ABSOLUTE_MAX_WORDS)
+        body = trim_to_word_range(body, spec["min_words"], ABSOLUTE_MAX_WORDS, idea)
         wc = word_count(body)
     voice_flags = validate_voice(body)
     return {
@@ -447,6 +595,7 @@ def post_from_idea(idea: dict, tier: str = "default") -> dict:
         "length_tier": tier,
         "tier_label": spec["label"],
         "voice_flags": voice_flags,
+        "uncertainty_count": count_uncertainty(body),
     }
 
 

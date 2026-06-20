@@ -2,7 +2,7 @@
 
 Yes — **premium carousels will render consistently online** if these are in place.
 
-## What must be on GitHub (`marketing-os` / `master`)
+## What must be on GitHub (`hustronix35-prog/hustronix-content-ops` / `master`)
 
 | Path | Why |
 |------|-----|
@@ -29,7 +29,7 @@ Yes — **premium carousels will render consistently online** if these are in pl
 Or rely on auto-setup: `generate_carousel.py` calls `ensure_render_ready()` which installs Chromium if missing.
 
 **Automation settings:**
-- Repo: `hustronix35-prog/marketing-os`
+- Repo: `hustronix35-prog/hustronix-content-ops`
 - Branch: `master`
 - `skipInstall: false` (allows pip install from requirements.txt)
 

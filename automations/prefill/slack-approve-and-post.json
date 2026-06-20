@@ -1,16 +1,16 @@
 {
   "name": "Hustronix Approve & Post to LinkedIn",
-  "description": "Slack approve 1|2|3 → auto-publish short LinkedIn post. Repo: hustronix35-prog/marketing-os",
+  "description": "Slack approve 1|2|3 → auto-publish short LinkedIn post. Repo: hustronix35-prog/hustronix-content-ops",
   "workflow": {
     "triggers": [{ "slackTrigger": {} }],
     "actions": [{ "slack": {} }],
     "prompts": [
       {
-        "text": "When Slack message matches approve 1, approve 2, or approve 3:\n\n1. Run: python scripts/slack_approve_and_post.py \"{message}\"\n2. Reply in thread with confirmation or error\n3. Requires LINKEDIN_ACCESS_TOKEN + LINKEDIN_AUTHOR_URN in automation secrets\n\nRepo: hustronix35-prog/marketing-os branch master\nDo not rewrite post text — publish stored option as-is."
+        "text": "When Slack message matches approve 1, approve 2, or approve 3:\n\n1. Run: python scripts/slack_approve_and_post.py \"{message}\"\n2. Reply in thread with confirmation or error\n3. Requires LINKEDIN_ACCESS_TOKEN + LINKEDIN_AUTHOR_URN in automation secrets\n\nRepo: hustronix35-prog/hustronix-content-ops branch master\nDo not rewrite post text — publish stored option as-is."
       }
     ],
     "gitConfig": {
-      "repo": "hustronix35-prog/marketing-os",
+      "repo": "hustronix35-prog/hustronix-content-ops",
       "branch": "master"
     },
     "memoryEnabled": true

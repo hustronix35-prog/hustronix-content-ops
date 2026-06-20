@@ -1,16 +1,16 @@
 {
   "name": "Hustronix Daily Research Pipeline",
-  "description": "Daily: research + 3 short LinkedIn options to Slack. User approves with approve 1|2|3. Repo: hustronix35-prog/marketing-os",
+  "description": "Daily: research + 3 short LinkedIn options to Slack. User approves with approve 1|2|3. Repo: hustronix35-prog/hustronix-content-ops",
   "workflow": {
     "triggers": [{ "cron": { "cron": "0 7 * * *" } }],
     "actions": [{ "slack": {} }],
     "prompts": [
       {
-        "text": "You are running the Hustronix Marketing OS daily pipeline in repo hustronix35-prog/marketing-os on branch master.\n\nRead .cursor/rules/hustronix-brand.mdc and skills in .cursor/skills/\n\n1. Ingest + research + strategist (ensure 3+ pending ideas)\n2. Run: python scripts/run_daily_pipeline.py\n3. Send to Slack #marketing-os: one-line KPIs + post_options.slack_message (3 SHORT options)\n4. User replies approve 1|2|3 — handled by separate automation\n\nRules: short posts only, no AI hype, never publish without Slack approval.\n\nPrimary: run run_daily_pipeline.py then post slack_message to Slack."
+        "text": "You are running the Hustronix Marketing OS daily pipeline in repo hustronix35-prog/hustronix-content-ops on branch master.\n\nRead .cursor/rules/hustronix-brand.mdc and skills in .cursor/skills/\n\n1. Ingest + research + strategist (ensure 3+ pending ideas)\n2. Run: python scripts/run_daily_pipeline.py\n3. Send to Slack #marketing-os: one-line KPIs + post_options.slack_message (3 SHORT options)\n4. User replies approve 1|2|3 — handled by separate automation\n\nRules: short posts only, no AI hype, never publish without Slack approval.\n\nPrimary: run run_daily_pipeline.py then post slack_message to Slack."
       }
     ],
     "gitConfig": {
-      "repo": "hustronix35-prog/marketing-os",
+      "repo": "hustronix35-prog/hustronix-content-ops",
       "branch": "master"
     },
     "memoryEnabled": true,

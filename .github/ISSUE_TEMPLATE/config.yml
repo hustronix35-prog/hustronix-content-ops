@@ -1,0 +1,11 @@
+---
+name: config.yml
+description: Issue templates
+blank_issues_enabled: true
+contact_links:
+  - name: Portfolio Case Study
+    url: https://github.com/hustronix35-prog/hustronix-content-ops/blob/master/docs/portfolio-case-study.md
+    about: Read the 5-minute project overview for recruiters
+  - name: Architecture Docs
+    url: https://github.com/hustronix35-prog/hustronix-content-ops/blob/master/docs/architecture.md
+    about: System design and data flow

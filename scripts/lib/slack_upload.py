@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 import mimetypes
-import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -12,13 +12,20 @@ from lib.env_config import load_env, require_env
 
 
 def _api(method: str, url: str, token: str, data: dict | None = None) -> dict:
-    body = json.dumps(data).encode("utf-8") if data is not None else None
+    """Slack Web API expects application/x-www-form-urlencoded POST bodies."""
+    if method == "GET" and data:
+        url = f"{url}?{urllib.parse.urlencode(data)}"
+        body = None
+    elif data is not None:
+        body = urllib.parse.urlencode(data).encode("utf-8")
+    else:
+        body = None
     req = urllib.request.Request(
         url,
         data=body,
         headers={
             "Authorization": f"Bearer {token}",
-            "Content-Type": "application/json; charset=utf-8",
+            "Content-Type": "application/x-www-form-urlencoded",
         },
         method=method,
     )
@@ -56,7 +63,7 @@ def _upload_one(token: str, channel: str, path: Path, comment: str = "") -> dict
         "https://slack.com/api/files.completeUploadExternal",
         token,
         {
-            "files": [{"id": file_id, "title": path.stem}],
+            "files": json.dumps([{"id": file_id, "title": path.stem}]),
             "channel_id": channel,
             "initial_comment": comment,
         },

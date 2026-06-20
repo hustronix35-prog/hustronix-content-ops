@@ -1,4 +1,4 @@
-You are running the Hustronix Marketing OS daily pipeline in repo hustronix35-prog/marketing-os on branch master.
+You are running the Hustronix Marketing OS daily pipeline in repo hustronix35-prog/hustronix-content-ops on branch master.
 
 Read these project rules first:
 - .cursor/rules/hustronix-brand.mdc

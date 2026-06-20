@@ -1,5 +1,6 @@
 # Cursor Automations Setup
 
+**Repository:** `hustronix35-prog/hustronix-content-ops`  
 **Zero-terminal daily posting:** See [SLACK_LINKEDIN_SETUP.md](./SLACK_LINKEDIN_SETUP.md)
 
 ## Your daily workflow (Slack only)
@@ -10,6 +11,8 @@
 4. **`publish`** — post text (+ carousel) to LinkedIn
 
 One automation handles all commands: `automations/prefill/slack-post-workflow.json`
+
+**@mention chat** for discussion/feedback: `automations/prefill/slack-marketing-chat.json`
 
 Full setup: [SLACK_LINKEDIN_SETUP.md](./SLACK_LINKEDIN_SETUP.md)
 

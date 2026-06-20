@@ -25,7 +25,7 @@ Import: **`automations/prefill/slack-post-workflow.json`**
 | Send to Slack | ON → `#marketing-os` |
 | Ignore thread replies | ON |
 | Authenticated users only | ON |
-| Repo | `hustronix35-prog/marketing-os` |
+| Repo | `hustronix35-prog/hustronix-content-ops` |
 
 Also keep **Daily Research Pipeline** on schedule (no Slack trigger).
 
@@ -77,7 +77,7 @@ Bot:  Published OPTION 2 to LinkedIn (text + 6 images).
 | Carousel not in Slack | Add `SLACK_BOT_TOKEN` + `SLACK_CHANNEL_ID`, invite bot |
 | LinkedIn 401 | Refresh OAuth token |
 | Images not on LinkedIn | Token needs `w_member_social`; multi-image uses asset upload API |
-| Wrong repo | `hustronix35-prog/marketing-os` |
+| Wrong repo | `hustronix35-prog/hustronix-content-ops` |
 
 ---
 

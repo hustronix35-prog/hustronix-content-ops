@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+  <rect width="800" height="450" fill="#1a1a2e"/>
+  <rect x="40" y="40" width="720" height="370" rx="8" fill="#16213e" stroke="#d4af37" stroke-width="2"/>
+  <text x="400" y="120" fill="#d4af37" font-family="Inter, sans-serif" font-size="24" text-anchor="middle">Slack #marketing-os</text>
+  <text x="400" y="180" fill="#e0e0e0" font-family="Inter, sans-serif" font-size="16" text-anchor="middle">Daily post options placeholder</text>
+  <text x="400" y="220" fill="#888" font-family="Inter, sans-serif" font-size="14" text-anchor="middle">Replace with screenshot from #marketing-os</text>
+  <rect x="80" y="260" width="640" height="40" rx="4" fill="#0f3460"/>
+  <text x="100" y="285" fill="#aaa" font-family="monospace" font-size="12">Option 1 · Option 2 · Option 3 ’ select 2 ’ carousel ’ publish</text>
+</svg>

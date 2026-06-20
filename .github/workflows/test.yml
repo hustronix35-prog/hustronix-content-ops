@@ -1,0 +1,30 @@
+name: Tests
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - "scripts/lib/linkedin_posts.py"
+      - "tests/**"
+      - "requirements*.txt"
+  pull_request:
+    paths:
+      - "scripts/lib/linkedin_posts.py"
+      - "tests/**"
+      - "requirements*.txt"
+
+jobs:
+  voice-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install test dependencies
+        run: pip install pytest
+
+      - name: Run voice validation tests
+        run: pytest tests/ -v
