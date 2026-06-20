@@ -1,9 +1,51 @@
-# Hustronix Content Ops
+<p align="center">
+  <img src="assets/brand/logo-lockup.png" alt="Hustronix Content Ops" width="360" />
+</p>
 
-> Decision Intelligence for founder-led marketing — research, approve, publish, and learn without living in a terminal.
+<p align="center">
+  <strong>Decision Intelligence for founder-led marketing</strong><br/>
+  Research · Approve · Publish · Learn — without living in a terminal.
+</p>
 
-[![Carousel CI](https://github.com/hustronix35-prog/hustronix-content-ops/actions/workflows/carousel.yml/badge.svg)](https://github.com/hustronix35-prog/hustronix-content-ops/actions/workflows/carousel.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+<p align="center">
+  <a href="https://github.com/hustronix35-prog/hustronix-content-ops/actions/workflows/ci.yml"><img src="https://github.com/hustronix35-prog/hustronix-content-ops/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT" /></a>
+  <img src="https://img.shields.io/badge/Python-3.12+-3776AB?logo=python&logoColor=white" alt="Python 3.12+" />
+  <img src="https://img.shields.io/badge/LinkedIn-UGC%20API-0A66C2?logo=linkedin&logoColor=white" alt="LinkedIn API" />
+  <img src="https://img.shields.io/badge/Slack-Workflow-4A154B?logo=slack&logoColor=white" alt="Slack" />
+</p>
+
+<p align="center">
+  <a href="docs/QUICKSTART.md">Quickstart</a> ·
+  <a href="docs/portfolio-case-study.md">Case Study</a> ·
+  <a href="docs/architecture.md">Architecture</a> ·
+  <a href="docs/product.md">Product</a> ·
+  <a href="automations/SLACK_LINKEDIN_SETUP.md">Setup</a>
+</p>
+
+---
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Problem](#problem)
+- [Solution](#solution)
+- [Features](#features)
+- [Architecture](#architecture)
+- [Workflow](#workflow)
+- [Screenshots](#screenshots)
+- [Tech Stack](#tech-stack)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Example Workflow](#example-workflow)
+- [Folder Structure](#folder-structure)
+- [Design Decisions](#design-decisions)
+- [Limitations](#limitations)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
 ---
 
@@ -274,7 +316,7 @@ See [docs/engineering-recommendations.md](docs/engineering-recommendations.md).
 
 ## Roadmap
 
-- [ ] pytest suite for voice validation and workflow state
+- [x] pytest suite for voice validation
 - [ ] Docker Compose one-command bootstrap
 - [ ] Parameterized repo config for forks
 - [ ] Decision pattern auto-extraction from founder calls

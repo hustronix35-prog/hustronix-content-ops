@@ -12,6 +12,7 @@ on:
       - "scripts/lib/linkedin_posts.py"
       - "tests/**"
       - "requirements*.txt"
+  workflow_dispatch:
 
 jobs:
   voice-tests:
