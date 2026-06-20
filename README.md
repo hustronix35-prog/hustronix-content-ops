@@ -173,9 +173,16 @@ sequenceDiagram
 
 | Daily post options in Slack | Intelligent carousel |
 |----------------------------|----------------------|
-| ![Slack workflow placeholder](docs/assets/screenshot-slack-placeholder.svg) | ![Carousel placeholder](docs/assets/screenshot-carousel-placeholder.svg) |
+| ![Slack daily post options](docs/assets/screenshot-slack.png) | ![Hustronix carousel slide](docs/assets/screenshot-carousel.png) |
 
-> Placeholders — replace with actual screenshots from `#marketing-os` and `assets/generated/*/preview.html`.
+Left: mockup of the 7 AM `#marketing-os` digest. Right: slide 1 from an intelligent carousel (`assets/generated/3/`).
+
+**Want real Slack captures?** Screenshot your `#marketing-os` thread after the daily automation runs, save as `docs/assets/screenshot-slack.png`, and push. Regenerate carousel PNG anytime:
+
+```bash
+python scripts/generate_carousel.py --idea-id 3
+python scripts/capture_readme_screenshots.py
+```
 
 ---
 

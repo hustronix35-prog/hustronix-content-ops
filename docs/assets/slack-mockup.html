@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Slack #marketing-os mockup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Lato, "Segoe UI", sans-serif;
+      background: #1a1d21;
+      color: #d1d2d3;
+      width: 900px;
+      padding: 24px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #35373b;
+      margin-bottom: 20px;
+    }
+    .hash { color: #ababad; font-size: 18px; font-weight: 700; }
+    .channel { font-size: 18px; font-weight: 700; color: #fff; }
+    .badge { background: #1164a3; color: #fff; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-left: 8px; }
+    .msg { display: flex; gap: 12px; margin-bottom: 24px; }
+    .avatar {
+      width: 36px; height: 36px; border-radius: 6px;
+      background: linear-gradient(135deg, #d4af37, #8b6914);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; color: #111; font-size: 14px; flex-shrink: 0;
+    }
+    .meta { margin-bottom: 4px; }
+    .name { font-weight: 700; color: #fff; margin-right: 8px; }
+    .time { color: #ababad; font-size: 12px; }
+    .body { line-height: 1.5; font-size: 15px; }
+    .body em { color: #ababad; font-style: normal; }
+    .body strong { color: #fff; }
+    .divider { border-top: 1px solid #35373b; margin: 12px 0; }
+    .option { margin: 10px 0; padding-left: 4px; }
+    .option-title { color: #1d9bd1; font-weight: 700; margin-bottom: 4px; }
+    .cmds {
+      margin-top: 16px;
+      padding: 12px 14px;
+      background: #222529;
+      border-left: 4px solid #d4af37;
+      border-radius: 0 6px 6px 0;
+      font-size: 14px;
+    }
+    .cmds code { background: #35373b; padding: 2px 6px; border-radius: 4px; color: #e8c547; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <span class="hash">#</span>
+    <span class="channel">marketing-os</span>
+    <span class="badge">Daily Research</span>
+  </div>
+
+  <div class="msg">
+    <div class="avatar">HX</div>
+    <div>
+      <div class="meta">
+        <span class="name">Hustronix Content Ops</span>
+        <span class="time">7:00 AM</span>
+      </div>
+      <div class="body">
+        <p><em>Daily LinkedIn options — pick one, then follow the steps below:</em></p>
+        <div class="cmds">
+          <code>select 1</code> · <code>select 2</code> · <code>select 3</code> — choose &nbsp;|&nbsp;
+          <code>carousel</code> — slides &nbsp;|&nbsp; <code>publish</code> — LinkedIn
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="option">
+          <div class="option-title">OPTION 1 — [Builder] Building Hustronix</div>
+          We're building Decision Intelligence by dogfooding our own decision loops. The loop only works if we're honest about what we're trying to learn — not what will perform.
+        </div>
+
+        <div class="option">
+          <div class="option-title">OPTION 2 — [Research] AI Native Organizations</div>
+          AI-native companies don't fail on build speed. They fail on judgment calls. The gap appears long before teams name it as a decision problem.
+        </div>
+
+        <div class="option">
+          <div class="option-title">OPTION 3 — [Contrarian] Decision Quality ★</div>
+          Your AI stack is not your problem. Your decision infrastructure is. Teams have more information than ever — and worse alignment on why the last call was made.
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
