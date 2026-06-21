@@ -27,14 +27,11 @@ jobs:
       - name: Install render dependencies
         run: python scripts/setup_carousel_env.py
 
-      - name: Seed sample vault data
-        run: python scripts/seed_vault.py
-
       - name: Validate brand + playwright
         run: python scripts/validate_carousel_setup.py
 
       - name: Generate carousel smoke test
-        run: python scripts/generate_carousel.py --idea-id 3
+        run: python scripts/generate_carousel.py --smoke
 
       - name: Assert all PNGs rendered
         run: |

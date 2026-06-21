@@ -12,6 +12,18 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DB_PATH = ROOT / "data" / "marketing.db"
 ASSETS = ROOT / "assets" / "generated"
+SMOKE_IDEA = {
+    "id": 3,
+    "pillar": "decision_quality",
+    "post_type": "contrarian",
+    "hook": "Your AI stack is not your problem. Your decision infrastructure is.",
+    "source_type": "research",
+    "body": (
+        "Teams have more information than ever — and worse alignment on why the last call was made. "
+        "The gap shows up before anyone names it a process problem."
+    ),
+}
+SMOKE_DRAFT_ID = 3
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from lib.carousel_builder import build_brief  # noqa: E402
@@ -85,22 +97,28 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Generate Hustronix carousel/images")
     parser.add_argument("--idea-id", type=int, help="Content idea ID")
     parser.add_argument("--option", type=int, help="Daily post option 1-3")
+    parser.add_argument("--smoke", action="store_true", help="CI smoke test (no DB required)")
     parser.add_argument("--single", action="store_true", help="Single insight image (1080x1080)")
     parser.add_argument("--html-only", action="store_true", help="Skip PNG render")
     parser.add_argument("--draft-id", type=int, help="Output folder under assets/generated/")
     args = parser.parse_args()
 
-    if args.option:
+    if args.smoke:
+        idea = SMOKE_IDEA
+        draft_id = args.draft_id or SMOKE_DRAFT_ID
+    elif args.option:
         idea = idea_from_post_option(args.option)
+        draft_id = args.draft_id
     elif args.idea_id:
         idea = idea_from_id(args.idea_id)
+        draft_id = args.draft_id
     else:
-        parser.error("Provide --idea-id or --option")
+        parser.error("Provide --idea-id, --option, or --smoke")
 
     visual_type = "single_image" if args.single else "carousel"
     result = generate(
         idea,
-        draft_id=args.draft_id,
+        draft_id=draft_id,
         visual_type=visual_type,
         render_png=not args.html_only,
     )
